@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080B11">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>The Unified Stargate Watch Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Chakra+Petch:wght@400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080B11; --bg-2:#0C1119; --panel:#101724; --panel-2:#0E1420;
+    --line:#1B2433; --line-2:#243044; --metal-a:#39455A; --metal-b:#212C3D;
+    --eh:#4FB8E6; --eh-bright:#9BE3FF; --eh-deep:#1C6FA8;
+    --chevron:#F4A93C; --chevron-bright:#FFC76A; --chevron-off:#36404F;
+    --c-movie:#D9DFE8; --c-sg1:#4FB8E6; --c-sga:#37C8A4; --c-sgu:#9080E6; --c-web:#D7A24A;
+    --c-book:#C9A86A; --c-comic:#E76AA4; --c-comic-bright:#FF9DCB;
+    --ink:#E8EEF6; --ink-mut:#93A1B4; --ink-faint:#5E6B7E;
+    --radius:10px; --maxw:1080px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0;
+    background:
+      radial-gradient(1200px 700px at 50% -200px, rgba(79,184,230,.10), transparent 60%),
+      radial-gradient(900px 600px at 90% 10%, rgba(144,128,230,.06), transparent 55%),
+      var(--bg);
+    color:var(--ink); font-family:"Barlow",system-ui,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  a{color:var(--eh);}
+
+  .bar{ position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:14px;
+    padding:10px clamp(12px,3vw,28px); background:rgba(8,11,17,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .bar .mark{ font-family:"Oswald",sans-serif; font-weight:700; letter-spacing:.06em; font-size:14px; text-transform:uppercase; white-space:nowrap; }
+  .bar .mark b{color:var(--eh);}
+  .bar .spacer{flex:1;}
+  .ringmini{ --p:0; width:34px;height:34px;border-radius:50%;
+    background:conic-gradient(var(--eh) calc(var(--p)*1%), rgba(255,255,255,.07) 0); display:grid;place-items:center; position:relative; flex:none; }
+  .ringmini::after{ content:""; position:absolute; inset:4px; border-radius:50%; background:var(--bg); box-shadow:inset 0 0 0 1px var(--line-2); }
+  .ringmini span{position:relative; z-index:1; font-family:"Chakra Petch",monospace; font-size:10px; font-weight:600;}
+  .btn{ font-family:"Chakra Petch",monospace; font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--ink-mut); background:transparent; border:1px solid var(--line-2); border-radius:6px; padding:7px 11px; cursor:pointer; white-space:nowrap; transition:.15s; }
+  .btn:hover{color:var(--ink); border-color:var(--eh); }
+  .barbtns{display:flex; gap:8px; align-items:center;}
+  @media(max-width:680px){ .bar .mark{font-size:12px;} .hidesm{display:none;} }
+
+  .hero{ max-width:var(--maxw); margin:0 auto; padding:clamp(26px,5vw,60px) clamp(16px,4vw,28px) 18px; text-align:center; }
+  .gatewrap{ width:min(360px,78vw); margin:0 auto 6px; position:relative; }
+  .gatewrap svg{ width:100%; height:auto; display:block; }
+  .eyebrow{ font-family:"Chakra Petch",monospace; font-size:12px; letter-spacing:.34em; text-transform:uppercase; color:var(--eh); margin:14px 0 4px; }
+  h1.title{ font-family:"Oswald",sans-serif; font-weight:700; font-size:clamp(34px,7vw,68px); line-height:.95; letter-spacing:.01em; text-transform:uppercase; margin:0 0 14px; }
+  h1.title em{ color:var(--eh); font-style:normal; }
+  .thesis{ max-width:640px; margin:0 auto 18px; color:var(--ink-mut); font-size:clamp(14px,2.2vw,17px); }
+  .readout{ font-family:"Chakra Petch",monospace; font-size:13px; letter-spacing:.04em; color:var(--chevron-bright); margin:8px 0 20px; min-height:1.2em; }
+  .readout b{color:var(--ink);}
+  .legend{ display:flex; flex-wrap:wrap; gap:8px 10px; justify-content:center; margin:0 auto 14px; max-width:680px;}
+  .lg{ display:inline-flex; align-items:center; gap:7px; font-family:"Chakra Petch",monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-mut); }
+  .dot{ width:9px;height:9px;border-radius:2px; display:inline-block; }
+  .modeswitch{ display:inline-flex; border:1px solid var(--line-2); border-radius:8px; overflow:hidden; margin-top:6px;}
+  .modeswitch button{ font-family:"Chakra Petch",monospace; font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding:9px 16px; background:transparent; color:var(--ink-mut); border:0; cursor:pointer; transition:.15s; }
+  .modeswitch button.on{ background:var(--eh); color:var(--bg); }
+
+  .stream{ max-width:var(--maxw); margin:0 auto; padding:8px clamp(12px,4vw,28px) 60px; }
+  .phase{ border:1px solid var(--line); border-radius:var(--radius); margin:14px 0; overflow:hidden; background:var(--panel-2); }
+  .phead{ display:flex; align-items:center; gap:14px; width:100%; padding:16px clamp(14px,2.5vw,22px); cursor:pointer; text-align:left; background:linear-gradient(180deg, rgba(255,255,255,.015), transparent); border:0; color:inherit; }
+  .pnum{ font-family:"Chakra Petch",monospace; font-weight:700; font-size:13px; color:var(--chevron); border:1px solid var(--line-2); border-radius:6px; padding:6px 9px; min-width:46px; text-align:center; letter-spacing:.04em; flex:none; position:relative; }
+  .pnum.locked{ color:var(--bg); background:var(--chevron); border-color:var(--chevron); box-shadow:0 0 14px rgba(244,169,60,.45); }
+  .ptitles{ flex:1; min-width:0; }
+  .ptitle{ font-family:"Oswald",sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.02em; font-size:clamp(16px,2.4vw,22px); line-height:1.05; }
+  .psub{ color:var(--ink-mut); font-size:13px; margin-top:2px; }
+  .pmeta{ display:flex; align-items:center; gap:12px; flex:none; }
+  .pcount{ font-family:"Chakra Petch",monospace; font-size:12px; color:var(--ink-mut); white-space:nowrap; }
+  .pcomic{ display:none; align-items:center; gap:3px; font-family:"Chakra Petch",monospace; font-size:10px; font-weight:700; color:var(--c-comic); white-space:nowrap; letter-spacing:.03em; }
+  body.show-completionist .pcomic{ display:inline-flex; }
+  .pbar{ width:90px; height:5px; border-radius:3px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .pbar i{ display:block; height:100%; width:0; background:var(--eh); transition:width .35s; }
+  .chev{ color:var(--ink-faint); font-size:18px; transition:.25s; flex:none; }
+  .phase.open .chev{ transform:rotate(90deg); color:var(--eh); }
+  @media(max-width:640px){ .pbar,.psub .longsub{display:none;} .pmeta{gap:8px;} }
+  .pbody{ display:none; padding:4px clamp(8px,2vw,14px) 12px; }
+  .phase.open .pbody{ display:block; }
+  .seasonhdr{ font-family:"Chakra Petch",monospace; font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-faint); padding:16px 10px 6px; border-bottom:1px solid var(--line); margin-bottom:4px; }
+
+  .seasonbar{ display:flex; flex-wrap:wrap; align-items:center; gap:7px; padding:12px 8px 8px; border-bottom:1px dashed var(--line); margin-bottom:4px; }
+  .seasonbar .sbl{ font-family:"Chakra Petch",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-right:4px; }
+  .schip{ display:inline-flex; align-items:center; gap:7px; font-family:"Chakra Petch",monospace; font-size:11px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-mut); background:transparent; border:1px solid var(--line-2); border-radius:20px; padding:5px 12px 5px 8px; cursor:pointer; transition:.15s; }
+  .schip .box{ width:14px;height:14px;border-radius:4px;border:1.5px solid var(--line-2); position:relative; flex:none; transition:.15s; }
+  .schip i{ font-style:normal; opacity:.55; font-size:10px; }
+  .schip:hover{ border-color:var(--eh); color:var(--ink); }
+  .schip:focus-visible{ outline:2px solid var(--eh-bright); outline-offset:2px; }
+  .schip.some .box{ border-color:var(--eh); }
+  .schip.some .box::after{ content:""; position:absolute; left:2px; right:2px; top:5px; height:2px; background:var(--eh); border-radius:1px; }
+  .schip.all{ color:var(--eh); border-color:var(--eh); background:rgba(79,184,230,.08); }
+  .schip.all .box{ background:var(--eh); border-color:var(--eh); }
+  .schip.all .box::after{ content:""; position:absolute; left:4px; top:1px; width:4px;height:8px; border:solid var(--bg); border-width:0 2px 2px 0; transform:rotate(45deg); }
+
+  .row{ display:flex; align-items:flex-start; gap:12px; padding:9px 10px; border-radius:8px; transition:background .12s; }
+  .row:hover{ background:rgba(255,255,255,.025); }
+  .row.done .rtitle{ color:var(--ink-faint); text-decoration:line-through; text-decoration-color:rgba(255,255,255,.25); }
+  .cb{ appearance:none; -webkit-appearance:none; flex:none; cursor:pointer; width:19px;height:19px;border-radius:5px; margin-top:2px; border:1.5px solid var(--line-2); background:transparent; position:relative; transition:.15s; }
+  .cb:hover{ border-color:var(--eh); }
+  .cb:checked{ background:var(--eh); border-color:var(--eh); }
+  .cb:checked::after{ content:""; position:absolute; left:5px; top:1px; width:5px; height:10px; border:solid var(--bg); border-width:0 2.5px 2.5px 0; transform:rotate(45deg); }
+  .cb:focus-visible{ outline:2px solid var(--eh-bright); outline-offset:2px; }
+  .rmain{ flex:1; min-width:0; }
+  .rline{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .code{ font-family:"Chakra Petch",monospace; font-size:11px; font-weight:600; color:var(--ink-faint); letter-spacing:.03em; white-space:nowrap; }
+  .rtitle{ font-weight:500; font-size:15.5px; }
+  .badge{ font-family:"Chakra Petch",monospace; font-size:9.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:2px 7px; border-radius:4px; white-space:nowrap; border:1px solid currentColor; opacity:.92;}
+  .parts{ font-family:"Chakra Petch",monospace; font-size:9px; letter-spacing:.06em; color:var(--chevron); border:1px solid var(--chevron-off); border-radius:4px; padding:2px 6px; text-transform:uppercase; }
+  .note{ display:block; color:var(--ink-mut); font-size:13px; margin-top:3px; }
+  .note::before{ content:"\25B8  "; color:var(--chevron); }
+
+  .sup{ display:flex; gap:12px; align-items:flex-start; margin:8px 6px; padding:12px 14px; border:1px dashed var(--line-2); border-left:3px solid var(--c-book); border-radius:8px; background:linear-gradient(180deg, rgba(201,168,106,.05), transparent); }
+  .sup .ico{ font-size:18px; flex:none; line-height:1.2; }
+  .sup .stitle{ font-family:"Chakra Petch",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--c-book); margin-bottom:2px; }
+  .sup .sbody{ font-weight:500; font-size:14.5px; }
+  .sup .snote{ color:var(--ink-mut); font-size:13px; margin-top:3px; }
+  .sup.comic{ border-left-color:var(--c-comic); background:linear-gradient(180deg, rgba(231,106,164,.06), transparent); }
+  .sup.comic .stitle{ color:var(--c-comic); }
+
+  .appendix{ border:1px solid var(--line); border-top:2px solid var(--c-book); border-radius:var(--radius); margin:30px auto 0; max-width:var(--maxw); padding:clamp(16px,3vw,28px); background:var(--panel-2); }
+  .appendix h2{ font-family:"Oswald",sans-serif; text-transform:uppercase; letter-spacing:.03em; font-size:clamp(20px,3vw,28px); margin:0 0 4px; }
+  .appendix .lede{ color:var(--ink-mut); max-width:680px; font-size:14.5px; margin:0 0 18px; }
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; }
+  .card{ border:1px solid var(--line); border-radius:9px; padding:14px 16px; background:var(--panel); }
+  .card .ct{ font-family:"Chakra Petch",monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .card p{ margin:0 0 8px; font-size:13.5px; color:var(--ink); }
+  .card p:last-child{ margin-bottom:0; }
+  .card .ttl{ font-weight:600; }
+  .card small{ color:var(--ink-faint); }
+  .anchor-pill{ font-family:"Chakra Petch",monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; color:var(--chevron); border:1px solid var(--chevron-off); border-radius:4px; padding:2px 6px; }
+
+  footer{ max-width:var(--maxw); margin:0 auto; padding:26px clamp(16px,4vw,28px) 70px; color:var(--ink-faint); font-size:12.5px; }
+  footer .src{ border-top:1px solid var(--line); padding-top:16px; }
+  footer b{ color:var(--ink-mut); }
+
+  /* comics: woven inline on their own magenta ring (never gate the wormhole) */
+  #comicRing{ opacity:0; transition:opacity .5s ease; }
+  body.show-completionist #comicRing{ opacity:1; }
+  .ccb{ appearance:none; -webkit-appearance:none; flex:none; cursor:pointer; width:19px;height:19px;border-radius:5px; margin-top:2px; border:1.5px solid var(--line-2); background:transparent; position:relative; transition:.15s; }
+  .ccb:hover{ border-color:var(--c-comic); }
+  .ccb:checked{ background:var(--c-comic); border-color:var(--c-comic); }
+  .ccb:checked::after{ content:""; position:absolute; left:5px; top:1px; width:5px; height:10px; border:solid var(--bg); border-width:0 2.5px 2.5px 0; transform:rotate(45deg); }
+  .ccb:focus-visible{ outline:2px solid var(--c-comic-bright); outline-offset:2px; }
+  .row.cdone .rtitle{ color:var(--ink-faint); text-decoration:line-through; text-decoration-color:rgba(255,255,255,.25); }
+  .parts.cm{ color:var(--c-comic); border-color:var(--line-2); }
+  .crow{ border-left:2px solid var(--c-comic); margin-left:2px; padding-left:9px; background:linear-gradient(90deg, rgba(231,106,164,.05), transparent 45%); }
+  .ctag{ font-family:"Chakra Petch",monospace; font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--c-comic); white-space:nowrap; }
+  .creadout{ font-family:"Chakra Petch",monospace; font-size:12px; letter-spacing:.04em; color:var(--c-comic); margin:-10px 0 18px; }
+  .creadout b{ color:var(--ink); }
+
+  /* ==== FX: idle life + ceremonies + eggs ==== */
+  @keyframes twinkle{0%,100%{opacity:.12}50%{opacity:.85}}
+  #stars circle{animation:twinkle 4s ease-in-out infinite}
+  @keyframes chpulse{0%,100%{opacity:1}50%{opacity:.4}}
+  @keyframes toastin{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes toastout{to{opacity:0;transform:translateY(10px)}}
+  .toastwrap{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:90;pointer-events:none;width:max-content;max-width:92vw;}
+  .toast{font-family:"Chakra Petch",monospace;font-size:12.5px;letter-spacing:.05em;color:var(--ink);background:rgba(11,17,26,.94);border:1px solid var(--eh);box-shadow:0 4px 22px rgba(0,0,0,.5),0 0 16px rgba(79,184,230,.22);border-radius:10px;padding:9px 15px;text-align:center;animation:toastin .3s cubic-bezier(.2,.9,.3,1.15);max-width:92vw;}
+  .toast.gold{border-color:var(--chevron);box-shadow:0 4px 22px rgba(0,0,0,.5),0 0 16px rgba(244,169,60,.3)}
+  .toast.pink{border-color:var(--c-comic);box-shadow:0 4px 22px rgba(0,0,0,.5),0 0 16px rgba(231,106,164,.3)}
+  .toast.bye{animation:toastout .32s ease forwards}
+  @keyframes tloopflick{0%,100%{filter:none}18%{filter:invert(.92) hue-rotate(150deg)}26%{filter:none}52%{filter:invert(.92) hue-rotate(150deg) saturate(1.6)}62%{filter:none}}
+  body.tloop{animation:tloopflick .9s steps(1,end) 1}
+  @keyframes confall{to{transform:translateY(108vh) rotate(660deg)}}
+  .confetti{position:fixed;top:-5vh;z-index:85;pointer-events:none;animation:confall linear forwards;opacity:.95}
+  @media (prefers-reduced-motion: reduce){
+    #stars circle{animation:none} body.tloop{animation:none}
+  }
+
+  .completionist-only{ display:none; }
+  body.show-completionist .row.crow{ display:flex; }
+  body.show-completionist .completionist-only{ display:block; }
+  body.show-completionist .sup.completionist-only{ display:flex; }
+
+  @keyframes shimmer{ 0%{opacity:.78;} 50%{opacity:1;} 100%{opacity:.78;} }
+  @keyframes dial{ from{ transform:rotate(0deg);} to{ transform:rotate(360deg);} }
+  .glyphring{ transform-origin:200px 200px; }
+  .dialing .glyphring{ animation:dial 2.4s cubic-bezier(.4,.05,.2,1) 1; }
+  #ehpuddle{ animation:shimmer 5s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce){ .dialing .glyphring{ animation:none; } #ehpuddle{ animation:none; } html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="mark"><b>&#9921;</b> Stargate &middot; <span class="hidesm">Unified&nbsp;</span>Watch Order</div>
+  <div class="spacer"></div>
+  <div class="barbtns">
+    <button class="btn hidesm" id="expandBtn">Expand all</button>
+    <button class="btn" id="backupBtn" title="Download a progress backup file">Backup</button>
+    <button class="btn" id="restoreBtn" title="Restore progress from a backup file">Restore</button>
+    <button class="btn" id="resetBtn" title="Clear all progress">Reset</button>
+    <div class="ringmini" id="ringMini"><span id="ringMiniPct">0%</span></div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="gatewrap" id="gateWrap">
+    <svg viewBox="-30 -30 460 460" role="img" aria-label="Stargate progress dial">
+      <defs>
+        <radialGradient id="gMetal" cx="50%" cy="42%" r="62%">
+          <stop offset="0%" stop-color="#46536A"/><stop offset="55%" stop-color="#2C3749"/><stop offset="100%" stop-color="#161E2B"/>
+        </radialGradient>
+        <radialGradient id="gEH" cx="50%" cy="45%" r="60%">
+          <stop offset="0%" stop-color="#BDEBFF"/><stop offset="40%" stop-color="#4FB8E6"/><stop offset="100%" stop-color="#0E3F63"/>
+        </radialGradient>
+        <filter id="fGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="fEH" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="7" result="n">
+            <animate attributeName="seed" from="1" to="40" dur="14s" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+      <g id="stars"></g>
+      <circle id="ehpuddle" cx="200" cy="200" r="112" fill="url(#gEH)" opacity="0.16" filter="url(#fEH)"/>
+      <circle id="ehrim" cx="200" cy="200" r="112" fill="none" stroke="#7FD3F5" stroke-width="1" opacity="0.18"/>
+      <circle cx="200" cy="200" r="168" fill="none" stroke="url(#gMetal)" stroke-width="46"/>
+      <circle cx="200" cy="200" r="191" fill="none" stroke="#0E1622" stroke-width="2"/>
+      <circle cx="200" cy="200" r="145" fill="none" stroke="#0E1622" stroke-width="2"/>
+      <g class="glyphring" id="glyphRing"></g>
+      <circle id="progArc" cx="200" cy="200" r="168" fill="none" stroke="var(--eh)" stroke-width="6" stroke-linecap="round" filter="url(#fGlow)" transform="rotate(-90 200 200)" stroke-dasharray="0 9999" opacity="0.95"/>
+      <g id="chevrons"></g>
+      <g id="comicRing">
+        <circle id="comicTrack" cx="200" cy="200" r="210" fill="none" stroke="var(--c-comic)" stroke-width="3" opacity="0.13"/>
+        <circle id="comicArc" cx="200" cy="200" r="210" fill="none" stroke="var(--c-comic)" stroke-width="5" stroke-linecap="round" filter="url(#fGlow)" transform="rotate(-90 200 200)" stroke-dasharray="0 9999" opacity="0.95"/>
+      </g>
+      <circle id="ehswirl" cx="200" cy="200" r="94" fill="none" stroke="#BFE9FA" stroke-width="2.4" stroke-dasharray="9 24" stroke-linecap="round" opacity="0"/>
+      <g id="fxLayer"></g>
+    </svg>
+  </div>
+
+  <div class="eyebrow">Chevron Seven &middot; Locked</div>
+  <h1 class="title">The Unified<br><em>Stargate</em> Watch Order</h1>
+  <p class="thesis">Two galaxies, three series, four films and a prequel &mdash; sequenced so every crossover lands in place, every multi-part story stays whole, and the wormhole holds from the first chevron to the last.</p>
+  <div class="readout" id="readout">Dial an episode to begin. 0 of 337 stops locked in.</div>
+  <div class="creadout completionist-only" id="comicReadout">&#9672; Comics archive &middot; 0 / 28 logged</div>
+
+  <div class="legend">
+    <span class="lg"><span class="dot" style="background:var(--c-movie)"></span>Film</span>
+    <span class="lg"><span class="dot" style="background:var(--c-sg1)"></span>SG-1</span>
+    <span class="lg"><span class="dot" style="background:var(--c-sga)"></span>Atlantis</span>
+    <span class="lg"><span class="dot" style="background:var(--c-sgu)"></span>Universe</span>
+    <span class="lg"><span class="dot" style="background:var(--c-web)"></span>Origins</span>
+    <span class="lg completionist-only" style="display:none"><span class="dot" style="background:var(--c-book)"></span>Novels</span>
+    <span class="lg completionist-only" style="display:none"><span class="dot" style="background:var(--c-comic)"></span>Comics</span>
+  </div>
+
+  <div class="modeswitch" role="tablist" aria-label="Viewing mode">
+    <button id="mScreen" class="on">Screen Canon</button>
+    <button id="mComp">Completionist</button>
+  </div>
+</header>
+
+<main class="stream" id="stream"></main>
+
+<section class="appendix completionist-only" id="appendix">
+  <h2>The Expanded Library</h2>
+  <p class="lede">Stargate's print and panel canon is vast, and fans famously argue over where it all slots in. The screen order above stays clean; here is where the major book and comic lines anchor, plus the side material. None of it is required &mdash; but for a true completionist, this is the map.</p>
+  <div class="cards">
+    <div class="card">
+      <div class="ct" style="color:var(--c-book)">&#128213; Post-film branch <span class="anchor-pill">after the movie</span></div>
+      <p><span class="ttl">Bill McCay &mdash; Rebellion &middot; Retaliation &middot; Retribution &middot; Reconnaissance &middot; Resistance</span> <small>(Roc, 1995&ndash;99)</small></p>
+      <p>Five novels continuing the 1994 film from Emmerich's own notes. An <b>alternate continuity</b> that SG-1 overwrites &mdash; here Sha're is "Sha'uri," there is no Carter or Teal'c, and the program goes public. Read as a glorious "what could have been."</p>
+    </div>
+    <div class="card">
+      <div class="ct" style="color:var(--c-comic)">&#128215; Post-film branch <span class="anchor-pill">after the movie</span></div>
+      <p><span class="ttl">Entity Comics &mdash; One Nation Under Ra &middot; Underworld</span> <small>(1996&ndash;97, collected as <i>The New Adventures Collection</i>)</small></p>
+      <p>The other pre-TV continuation: a film adaptation plus original stories with new characters. Its own non-canon branch, parallel to McCay.</p>
+    </div>
+    <div class="card">
+      <div class="ct" style="color:var(--c-sg1)">&#128216; SG-1 tie-ins <span class="anchor-pill">across seasons 1&ndash;10</span></div>
+      <p><span class="ttl">Roc / Ashley McConnell</span> &mdash; <i>Sacrifice Moon</i> (the team's literal first mission, ~S1), <i>The Price You Pay</i>, <i>The First Amendment</i>, <i>The Morpheus Factor</i>.</p>
+      <p><span class="ttl">Fandemonium</span> &mdash; 30+ SG-1 novels &amp; novellas set throughout the run; read each within its matching season. (e.g. <i>Behind Enemy Lines</i> follows S7's "Fragile Balance.")</p>
+      <p><span class="ttl">Comics</span> &mdash; Avatar Press (2003&ndash;07) and Dynamite's Vala &amp; Daniel minis (2010&ndash;11), all set during the series.</p>
+    </div>
+    <div class="card">
+      <div class="ct" style="color:var(--c-sga)">&#128216; Atlantis tie-ins <span class="anchor-pill">across seasons 1&ndash;5</span></div>
+      <p><span class="ttl">Fandemonium</span> &mdash; the <i>Rising</i> novelization plus a long run of Pegasus adventures (<i>Reliquary</i>, <i>Casualties of War</i>, <i>Death Game</i>, <i>Mirror, Mirror</i>&hellip;), placed within their seasons.</p>
+      <p><span class="ttl">Comics</span> &mdash; Avatar Press Atlantis (2005&ndash;07).</p>
+    </div>
+    <div class="card">
+      <div class="ct" style="color:var(--c-book)">&#128213; Atlantis "Season 6" <span class="anchor-pill">after SGA finale</span></div>
+      <p><span class="ttl">Legacy series</span> &mdash; Homecoming &middot; The Lost &middot; Allegiance &middot; The Furies &middot; Secrets &middot; Inheritors (then <i>Unascended</i> &amp; <i>The Third Path</i>).</p>
+      <p>The beloved book-form continuation, picking up the instant "Enemy at the Gate" ends. The closest thing to an official next chapter for Atlantis.</p>
+    </div>
+    <div class="card">
+      <div class="ct" style="color:var(--c-comic)">&#128215; Post-finale comics <span class="anchor-pill">after SGA / SGU</span></div>
+      <p><span class="ttl">American Mythology &mdash; Atlantis</span>: Back to Pegasus &middot; Gateways &middot; Hearts &amp; Minds &middot; Singularity. A <b>separate</b> post-S5 continuation that diverges from the Legacy novels &mdash; enjoy either as its own timeline.</p>
+      <p><span class="ttl">American Mythology &mdash; Universe</span>: <i>Back to Destiny</i> resolves the "Gauntlet" cliffhanger the show never could, plus the SGA/SGU Anthology one-shots.</p>
+    </div>
+    <div class="card">
+      <div class="ct" style="color:var(--c-sgu)">&#128216; Universe in print</div>
+      <p><span class="ttl">Fandemonium &mdash; <i>Stargate Universe: Air</i></span>, the novelization of the three-part pilot. The lone SGU novel.</p>
+    </div>
+    <div class="card">
+      <div class="ct" style="color:var(--ink-faint)">&#8856; Outside canon &mdash; watch anytime</div>
+      <p><span class="ttl">Stargate Infinity</span> <small>(animated, 26 eps, 2002&ndash;03)</small> &mdash; aired during SG-1's sixth season with no involvement from the live-action team, and it contradicts established lore. Set in the future; elements stop fitting after SG-1 Season 5.</p>
+      <p><span class="ttl">Games</span> &mdash; <i>SG-1: Unleashed</i>, <i>Stargate Resistance</i>, and the cancelled MMO <i>Stargate Worlds</i>. Fun side material, not part of the story.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="src">
+    <p><b>How this order was built.</b> The spine is GateWorld's <i>Optimized Stargate Watch Order</i> &mdash; broadcast order, but with multi-part stories kept in one block and a couple of intended continuity fixes restored (notably SG-1 "Covenant" before "Affinity," and the Atlantis Season 3 finale held until after <i>The Ark of Truth</i>). It is cross-referenced against the watch guides at ScreenRant, SlashFilm, ComicBook.com and Popverse &mdash; which all converge on the same interleaving &mdash; with expanded-universe placements drawn from the Stargate Wiki and publisher listings.</p>
+    <p style="margin-top:10px;">337 checkpoints span the full saga: all 354 episodes across SG-1, Atlantis and Universe, four films, and the Origins prequel. Two- and three-part stories are grouped as single stops. Your progress saves automatically. The ninth chevron &mdash; like Destiny's own address &mdash; completes the connection.</p>
+  </div>
+</footer>
+
+<script>
+/* ============ DATA ============ */
+const M="movie",S1="sg1",SA="sga",SU="sgu",W="web",K="kino";
+const BADGE={movie:["FILM","var(--c-movie)"],sg1:["SG-1","var(--c-sg1)"],sga:["ATLANTIS","var(--c-sga)"],
+  sgu:["UNIVERSE","var(--c-sgu)"],web:["ORIGINS","var(--c-web)"],kino:["KINO","var(--c-sgu)"],multi:["MULTI","var(--c-comic)"]};
+function e(c,t,s,n,p){return{c,t,s,n,p};}
+function sup(kind,title,body,note){return{sup:true,kind,title,body,note};}
+
+const PHASES=[
+ {n:"00",title:"Point of Origin",sub:"The film that opened the gate",chev:0,items:[
+   e("1994","Stargate",M,"The Roland Emmerich feature. Kurt Russell as O'Neil, James Spader as Daniel Jackson. Start here even if you are here for the shows."),
+   sup("\uD83D\uDCD5","BOOK BRANCH \u2014 read here","Bill McCay's film-sequel saga (Rebellion \u2192 Resistance)","An alternate continuation of the movie that SG-1 later overwrites. A parallel branch \u2014 see the Expanded Library below."),
+ ]},
+ {n:"01",title:"The Foundation",sub:"SG-1 \u00B7 Seasons 1\u20137 \u2014 the bedrock of the franchise",chev:1,items:[
+   {hdr:"Season 1"},
+   e("101\u2013102","Children of the Gods",S1,"Recommended cut: the 2009 'Final Cut' \u2014 recut, new VFX and score.","2 PARTS"),
+   e("103","The Enemy Within",S1),e("104","Emancipation",S1),e("105","The Broca Divide",S1),
+   e("106","The First Commandment",S1),e("107","Cold Lazarus",S1),e("108","The Nox",S1),
+   e("109","Brief Candle",S1),e("110","Thor's Hammer",S1),e("111","The Torment of Tantalus",S1),
+   e("112","Bloodlines",S1),e("113","Fire and Water",S1),e("114","Hathor",S1),
+   e("115","Singularity",S1),e("116","Cor-ai",S1),e("117","Enigma",S1),e("118","Solitudes",S1),
+   e("119","Tin Man",S1),e("120","There But for the Grace of God",S1),e("121","Politics",S1),
+   e("122","Within the Serpent's Grasp",S1),
+   {hdr:"Season 2"},
+   e("201","The Serpent's Lair",S1),e("202","In the Line of Duty",S1),e("203","Prisoners",S1),
+   e("204","The Gamekeeper",S1),e("205","Need",S1),e("206","Thor's Chariot",S1),
+   e("207","Message in a Bottle",S1),e("208","Family",S1),e("209","Secrets",S1),e("210","Bane",S1),
+   e("211\u2013212","The Tok'ra",S1,null,"2 PARTS"),e("213","Spirits",S1),e("214","Touchstone",S1),
+   e("215","The Fifth Race",S1),e("216","A Matter of Time",S1),e("217","Holiday",S1),
+   e("218","Serpent's Song",S1),e("219","One False Step",S1),e("220","Show and Tell",S1),
+   e("221","1969",S1),e("222","Out of Mind",S1),
+   {hdr:"Season 3"},
+   e("301","Into the Fire",S1),e("302","Seth",S1),e("303","Fair Game",S1),e("304","Legacy",S1),
+   e("305","Learning Curve",S1),e("306","Point of View",S1),e("307","Deadman Switch",S1),
+   e("308","Demons",S1),e("309","Rules of Engagement",S1),e("310","Forever in a Day",S1),
+   e("311","Past and Present",S1),e("312\u2013313","Jolinar's Memories \u00B7 The Devil You Know",S1,null,"2 PARTS"),
+   e("314","Foothold",S1),e("315","Pretense",S1),e("316","Urgo",S1),e("317","A Hundred Days",S1),
+   e("318","Shades of Grey",S1),e("319","New Ground",S1),e("320","Maternal Instinct",S1),
+   e("321","Crystal Skull",S1),e("322","Nemesis",S1),
+   {hdr:"Season 4"},
+   e("401","Small Victories",S1),e("402","The Other Side",S1),e("403","Upgrades",S1),
+   e("404","Crossroads",S1),e("405","Divide and Conquer",S1),e("406","Window of Opportunity",S1),
+   e("407","Watergate",S1),e("408","The First Ones",S1),e("409","Scorched Earth",S1),
+   e("410","Beneath the Surface",S1),e("411","Point of No Return",S1),e("412","Tangent",S1),
+   e("413","The Curse",S1),e("414","The Serpent's Venom",S1),e("415","Chain Reaction",S1),
+   e("416","2010",S1),e("417","Absolute Power",S1),e("418","The Light",S1),e("419","Prodigy",S1),
+   e("420","Entity",S1),e("421","Double Jeopardy",S1),e("422","Exodus",S1),
+   {hdr:"Season 5"},
+   e("501","Enemies",S1),e("502","Threshold",S1),e("503","Ascension",S1),e("504","The Fifth Man",S1),
+   e("505","Red Sky",S1),e("506","Rite of Passage",S1),e("507","Beast of Burden",S1),
+   e("508","The Tomb",S1),e("509","Between Two Fires",S1),e("510","2001",S1),
+   e("511","Desperate Measures",S1),e("512","Wormhole X-Treme!",S1),e("513","Proving Ground",S1),
+   e("514","48 Hours",S1),e("515\u2013516","Summit \u00B7 Last Stand",S1,null,"2 PARTS"),e("517","Fail Safe",S1),
+   e("518","The Warrior",S1),e("519","Menace",S1),e("520","The Sentinel",S1),e("521","Meridian",S1),
+   e("522","Revelations",S1),
+   {hdr:"Season 6"},
+   e("601\u2013602","Redemption",S1,null,"2 PARTS"),e("603","Descent",S1),e("604","Frozen",S1),
+   e("605","Nightwalkers",S1),e("606","Abyss",S1),e("607","Shadow Play",S1),e("608","The Other Guys",S1),
+   e("609","Allegiance",S1),e("610","Cure",S1),e("611","Prometheus",S1),e("612","Unnatural Selection",S1),
+   e("613","Sight Unseen",S1),e("614","Smoke & Mirrors",S1),e("615","Paradise Lost",S1),
+   e("616","Metamorphosis",S1),e("617","Disclosure",S1),e("618","Forsaken",S1),e("619","The Changeling",S1),
+   e("620","Memento",S1),e("621","Prophecy",S1),e("622","Full Circle",S1),
+   {hdr:"Season 7"},
+   e("701","Fallen",S1),e("702","Homecoming",S1),e("703","Fragile Balance",S1),e("704","Orpheus",S1),
+   e("705","Revisions",S1),e("706","Lifeboat",S1),e("707","Enemy Mine",S1),e("708","Space Race",S1),
+   e("709","Avenger 2.0",S1),e("710","Birthright",S1),e("711\u2013712","Evolution",S1,null,"2 PARTS"),
+   e("713","Grace",S1),e("714","Fallout",S1),e("715","Chimera",S1),e("716","Death Knell",S1),
+   e("717\u2013718","Heroes",S1,null,"2 PARTS"),e("719","Resurrection",S1),e("720","Inauguration",S1),
+   e("721\u2013722","Lost City",S1,"The S7 finale finds the Ancient outpost in Antarctica \u2014 and sets up Atlantis.","2 PARTS"),
+ ]},
+ {n:"02",title:"The Convergence",sub:"SG-1 S8 \u00D7 Atlantis S1 \u2014 two shows, one Friday night",chev:2,items:[
+   e("SG1 801\u2013802","New Order",S1,"Season 8 opens \u2014 and specifically sets up the Atlantis pilot. Watch as a block.","2 PARTS"),
+   e("SGA 101\u2013102","Rising",SA,"The Atlantis two-hour pilot. 'New Order' leads straight into it.","2 PARTS"),
+   e("SG1 803","Lockdown",S1),e("SGA 103","Hide and Seek",SA),
+   e("SG1 804","Zero Hour",S1),e("SGA 104","Thirty-Eight Minutes",SA),
+   e("SG1 805","Icon",S1),e("SGA 105","Suspicion",SA),
+   e("SG1 806","Avatar",S1),e("SGA 106","Childhood's End",SA),
+   e("SG1 808","Covenant",S1,"Continuity fix \u2014 watch 808 BEFORE 807. It aired out of intended order; otherwise a character knows something an episode too early."),
+   e("SGA 107","Poisoning the Well",SA),
+   e("SG1 807","Affinity",S1),e("SGA 108","Underground",SA),
+   e("SG1 809","Sacrifices",S1),e("SGA 109","Home",SA),
+   e("SG1 810","Endgame",S1),
+   e("SGA 110","The Storm",SA,"The Storm / The Eye is a two-part Atlantis story \u2014 keep them together."),
+   e("SGA 111","The Eye",SA),
+   e("SG1 811","Gemini",S1),e("SGA 112","The Defiant One",SA),
+   e("SG1 812","Prometheus Unbound",S1),e("SGA 113","Hot Zone",SA),
+   e("SG1 813","It's Good to Be King",S1,"Nudged a little later than broadcast so it follows Atlantis's 'Before I Sleep' \u2014 the SG-1 thread tracks better this way."),
+   e("SGA 114","Sanctuary",SA),
+   e("SG1 814","Full Alert",S1),e("SG1 815","Citizen Joe",S1),
+   e("SGA 115","Before I Sleep",SA),
+   e("SG1 816\u2013817","Reckoning",S1,null,"2 PARTS"),
+   e("SG1 818","Threads",S1),
+   e("SG1 819\u2013820","Moebius",S1,"Finish Moebius before starting the Atlantis siege arc that closes Season 1.","2 PARTS"),
+   e("SGA 116","The Brotherhood",SA),e("SGA 117","Letters from Pegasus",SA),e("SGA 118","The Gift",SA),
+   e("SGA 119 / 201","The Siege",SA,"Three-parter \u2014 Part 3 opens Atlantis Season 2. Watch all three together.","3 PARTS"),
+ ]},
+ {n:"03",title:"Two Fronts",sub:"SG-1 S9 \u00D7 Atlantis S2 \u2014 new faces, new enemies",chev:3,items:[
+   e("SG1 901\u2013902","Avalon",S1,"Season 9 begins \u2014 Mitchell arrives, the Ori rise, and Vala joins soon after.","2 PARTS"),
+   e("SG1 903","Origin",S1),
+   e("SGA 202","Intruder",SA),e("SGA 203","Runner",SA),
+   e("SG1 904","The Ties That Bind",S1),e("SGA 204","Duet",SA),
+   e("SG1 905","The Powers That Be",S1),e("SGA 205","Condemned",SA),
+   e("SG1 906","Beachhead",S1),e("SGA 206","Trinity",SA),
+   e("SG1 907","Ex Deus Machina",S1),e("SGA 207","Instinct",SA),
+   e("SG1 908","Babylon",S1),e("SGA 208","Conversion",SA),
+   e("SG1 909","Prototype",S1),e("SGA 209","Aurora",SA),
+   e("SG1 910\u2013911","The Fourth Horseman",S1,null,"2 PARTS"),
+   e("SGA 210","The Lost Boys",SA,"The Lost Boys / The Hive is a two-part Atlantis story."),
+   e("SGA 211","The Hive",SA),
+   e("SG1 912","Collateral Damage",S1),e("SGA 212","Epiphany",SA),
+   e("SG1 913","Ripple Effect",S1),e("SGA 213","Critical Mass",SA),
+   e("SG1 914","Stronghold",S1),e("SGA 214","Grace Under Pressure",SA),
+   e("SG1 915","Ethon",S1),e("SGA 215","The Tower",SA),
+   e("SG1 916","Off the Grid",S1),e("SGA 216","The Long Goodbye",SA),
+   e("SG1 917","The Scourge",S1),e("SGA 217","Coup D'\u00C9tat",SA),
+   e("SG1 918","Arthur's Mantle",S1),e("SGA 218","Michael",SA),e("SGA 219","Inferno",SA),
+   e("SG1 919","Crusade",S1,"Crusade / Camelot closes Season 9 and pitches directly into Season 10's opener."),
+   e("SG1 920","Camelot",S1),
+ ]},
+ {n:"04",title:"Endgame",sub:"SG-1 S10 \u00D7 Atlantis S3 + The Ark of Truth",chev:4,items:[
+   e("SG1 1001","Flesh and Blood",S1,"Resolves the Camelot cliffhanger. Season 10 begins.","3 PARTS"),
+   e("SGA 220","Allies",SA,"Closes Atlantis Season 2."),
+   e("SGA 301","No Man's Land",SA,"Opens Atlantis Season 3 \u2014 picks up the S2 cliffhanger."),
+   e("SGA 302","Misbegotten",SA),
+   e("SG1 1002","Morpheus",S1),
+   e("SG1 1003","The Pegasus Project",S1,"The big SG-1 \u00D7 Atlantis crossover \u2014 SG-1 travels to Atlantis."),
+   e("SGA 303","Irresistible",SA),
+   e("SG1 1004","Insiders",S1),e("SGA 304","Sateda",SA),
+   e("SG1 1005","Uninvited",S1),e("SGA 305","Progeny",SA),e("SGA 306","The Real World",SA),
+   e("SG1 1006","200",S1,"The franchise's 200th episode \u2014 an all-time comedy highlight."),
+   e("SG1 1007","Counterstrike",S1),e("SGA 307","Common Ground",SA),
+   e("SG1 1008","Memento Mori",S1),e("SGA 308","McKay and Mrs. Miller",SA),
+   e("SG1 1009","Company of Thieves",S1),e("SGA 309","Phantoms",SA),
+   e("SG1 1010\u20131011","The Quest",S1,null,"2 PARTS"),
+   e("SGA 310\u2013311","The Return",SA,null,"2 PARTS"),
+   e("SG1 1012","Line in the Sand",S1),e("SGA 312","Echoes",SA),
+   e("SG1 1013","The Road Not Taken",S1),e("SGA 313","Irresponsible",SA),
+   e("SG1 1014","The Shroud",S1),e("SGA 314","Tao of Rodney",SA),
+   e("SG1 1015","Bounty",S1),e("SGA 315","The Game",SA),
+   e("SG1 1016","Bad Guys",S1),e("SGA 316","The Ark",SA),
+   e("SG1 1017","Talion",S1),e("SGA 317","Sunday",SA),
+   e("SG1 1018","Family Ties",S1),e("SGA 318","Submersion",SA),
+   e("SG1 1019","Dominion",S1),e("SGA 319","Vengeance",SA),
+   e("SG1 1020","Unending",S1,"SG-1's series finale \u2014 but the Ori story is not resolved on TV."),
+   e("FILM 2008","Stargate: The Ark of Truth",M,"Wraps up SG-1's Ori arc. Watch immediately after 'Unending.'"),
+   e("SGA 320","First Strike",SA,"Held back to here on purpose \u2014 now Atlantis runs uninterrupted to its own finale. Leads into Season 4."),
+ ]},
+ {n:"05",title:"New Lantean Front",sub:"Atlantis \u00B7 Season 4 \u2014 Atlantis runs solo",chev:5,items:[
+   e("SGA 401","Adrift",SA,"Continues straight from 'First Strike.' A cast change is underway."),
+   e("SGA 402","Lifeline",SA),e("SGA 403","Reunion",SA),e("SGA 404","Doppelganger",SA),
+   e("SGA 405","Travelers",SA),e("SGA 406","Tabula Rasa",SA),e("SGA 407","Missing",SA),
+   e("SGA 408","The Seer",SA),e("SGA 409","Miller's Crossing",SA),e("SGA 410","This Mortal Coil",SA),
+   e("SGA 411","Be All My Sins Remember'd",SA),e("SGA 412","Spoils of War",SA),e("SGA 413","Quarantine",SA),
+   e("SGA 414","Harmony",SA),e("SGA 415","Outcast",SA),e("SGA 416","Trio",SA),e("SGA 417","Midway",SA),
+   e("SGA 418\u2013419","The Kindred",SA,null,"2 PARTS"),
+   e("SGA 420","The Last Man",SA,"Season 4 finale \u2014 ends on a cliffhanger."),
+ ]},
+ {n:"06",title:"Last Stand of Atlantis",sub:"Atlantis \u00B7 Season 5 + Continuum",chev:6,items:[
+   e("SGA 501","Search and Rescue",SA,"Resolves the Season 4 cliffhanger. Another cast change settles in."),
+   e("FILM 2008","Stargate: Continuum",M,"A line of dialogue places it right here \u2014 just after 'Search and Rescue.' It closes out a recurring SG-1 villain. Watch now, or whenever the mood strikes during Season 5."),
+   e("SGA 502","The Seed",SA),e("SGA 503","Broken Ties",SA),e("SGA 504","The Daedalus Variations",SA),
+   e("SGA 505","Ghost in the Machine",SA),e("SGA 506","The Shrine",SA),e("SGA 507","Whispers",SA),
+   e("SGA 508","The Queen",SA),e("SGA 509","Tracker",SA),
+   e("SGA 510","First Contact",SA,"First Contact / The Lost Tribe is a two-part story."),
+   e("SGA 511","The Lost Tribe",SA),
+   e("SGA 512","Outsiders",SA),e("SGA 513","Inquisition",SA),e("SGA 514","The Prodigal",SA),
+   e("SGA 515","Remnants",SA),e("SGA 516","Brain Storm",SA),e("SGA 517","Infection",SA),
+   e("SGA 518","Identity",SA),e("SGA 519","Vegas",SA),
+   e("SGA 520","Enemy at the Gate",SA,"The Atlantis series finale."),
+   sup("\uD83D\uDCD5","BOOK CONTINUATION \u2014 read here","Stargate Atlantis: Legacy (Homecoming \u2192 The Third Path)","The fan-favorite 'Season 6' in print. Picks up the instant the finale ends."),
+ ]},
+ {n:"07",title:"Destiny",sub:"Universe \u00B7 Seasons 1\u20132 \u2014 deeper, darker, further out",chev:7,items:[
+   e("SGU 101\u2013103","Air",SU,"The three-hour premiere. A character drama by design \u2014 set some time after the Atlantis finale.","3 PARTS"),
+   e("SGU 104","Darkness",SU),e("SGU 105","Light",SU),e("SGU 106","Water",SU),e("SGU 107","Earth",SU),
+   e("SGU 108","Time",SU),e("SGU 109","Life",SU),e("SGU 110","Justice",SU,"Mid-season finale."),
+   e("SGU 111","Space",SU),e("SGU 112","Divided",SU),e("SGU 113","Faith",SU),e("SGU 114","Human",SU),
+   e("SGU 115","Lost",SU),e("SGU 116","Sabotage",SU),e("SGU 117","Pain",SU),
+   e("KINO 1\u201334","Kino Webisodes",K,"34 short canon clips of shipboard life. Sprinkle them through Season 1 \u2014 or binge them right here (after 'Pain') to dodge spoilers. One is an epilogue to 'Time.'"),
+   e("SGU 118","Subversion",SU),
+   e("SGU 119\u2013120","Incursion",SU,"Season 1 finale cliffhanger.","2 PARTS"),
+   e("SGU 201","Intervention",SU),e("SGU 202","Aftermath",SU),e("SGU 203","Awakening",SU),
+   e("SGU 204","Pathogen",SU),e("SGU 205","Cloverdale",SU),e("SGU 206","Trial and Error",SU),
+   e("SGU 207","The Greater Good",SU),e("SGU 208","Malice",SU),e("SGU 209","Visitation",SU),
+   e("SGU 210","Resurgence",SU),e("SGU 211","Deliverance",SU),e("SGU 212","Twin Destinies",SU),
+   e("SGU 213","Alliances",SU),e("SGU 214","Hope",SU),e("SGU 215","Seizure",SU),e("SGU 216","The Hunt",SU),
+   e("SGU 217","Common Descent",SU),e("SGU 218","Epilogue",SU),e("SGU 219","Blockade",SU),
+   e("SGU 220","Gauntlet",SU,"The series finale \u2014 and, for now, the final hour of Stargate on screen. It ends mid-journey, on a note of hope."),
+ ]},
+ {n:"08",title:"The First Gate",sub:"Origins \u2014 the prequel, saved for last",chev:8,items:[
+   e("WEB 2018","Stargate Origins: Catherine",W,"A prequel set in 1939 Egypt. Chronologically it is first \u2014 but it leans on franchise familiarity, so it plays best at the end. The journey closes where the gate began. The ninth chevron locks."),
+ ]},
+];
+
+/* ============ COMICS DATA (anchored inline) ============ */
+/* each comic is woven in right after the episode whose code is `after` */
+const COMIC_INSERTS=[
+ // Phase 00 — right after the film (Entity Comics: an alternate film-continuity branch)
+ {after:"1994", t:"Stargate", n:"Film-continuity branch \u2014 Entity's adaptation of the 1994 movie (diverges from the show).", s:"movie", iss:"#1\u20134"},
+ {after:"1994", t:"Stargate: Rebellion", n:"Film branch \u2014 adapts Bill McCay's novel.", s:"movie", iss:"#1\u20133"},
+ {after:"1994", t:"Stargate: Doomsday World", n:"Film branch \u2014 Dr. Murphy & a second island gate.", s:"movie", iss:"#1\u20133"},
+ {after:"1994", t:"Stargate: One Nation Under Ra", n:"Film branch \u2014 Pharat-kah, Ra's successor.", s:"movie", iss:"1-shot"},
+ {after:"1994", t:"Stargate: Underworld", n:"Film branch \u2014 O'Neil & Daniel return to Abydos.", s:"movie", iss:"1-shot"},
+ // Phase 01 — Season 1
+ {after:"101\u2013102", t:"Free Comic Book Day Preview", n:"2003 promo \u2014 RoboCop / SG-1 flip-book; the comics' first look.", s:"sg1", iss:"preview"},
+ {after:"108", t:"P.O.W.", n:"Season 1 \u2014 right after \u201cThe Nox\u201d (before \u201cWithin the Serpent's Grasp\u201d): O'Neill taken prisoner.", s:"sg1", iss:"#1\u20133"},
+ {after:"112", t:"2003 Convention Special", n:"Season 1 \u2014 Teal'c & Bra'tac hold off Apophis's forces (story \u201cFirst Prime\u201d).", s:"sg1", iss:"1-shot"},
+ // Phase 01 — Season 2 (confirmed settings)
+ {after:"201", t:"2004 Convention Special", n:"Season 2 \u2014 a raid on Apophis's mothership (story \u201cKnow Your Enemy\u201d).", s:"sg1", iss:"1-shot"},
+ {after:"209", t:"Daniel's Song", n:"Season 2 \u2014 a device makes Daniel relive Sha're's capture.", s:"sg1", iss:"1-shot"},
+ {after:"210", t:"Fall of Rome: Prequel", n:"Season 2 \u2014 the legend of the Goa'uld \u201cMars,\u201d set before \u201cSerpent's Song.\u201d", s:"sg1", iss:"1-shot"},
+ {after:"218", t:"Fall of Rome", n:"Season 2 \u2014 SG-1 vs. the Roman System Lord Mars, after \u201cSerpent's Song.\u201d", s:"sg1", iss:"#1\u20133"},
+ // Phase 01 — Season 3
+ {after:"307", t:"Aris Boch", n:"Just after \u201cDeadman Switch\u201d \u2014 the bounty hunter returns.", s:"sg1", iss:"1-shot"},
+ {after:"315", t:"2006 Convention Special", n:"Around \u201cPretense\u201d \u2014 the Nox return; one of them turns to the Goa'uld (re-solicited from 2005).", s:"sg1", iss:"1-shot"},
+ // Phase 01 — Season 5 (on Abydos, before it is lost \u2014 approximate)
+ {after:"517", t:"Ra Reborn: Prequel", n:"Approximate \u2014 on Abydos (while it still stands), Daniel recounts the first mission as Ra resurfaces.", s:"sg1", iss:"1-shot"},
+ // Phase 01 — Season 7 (Dr. Fraiser still serving, so before \u201cHeroes\u201d)
+ {after:"716", t:"2007 Convention Special", n:"Before \u201cHeroes\u201d (Janet & Hammond still with the team) \u2014 an evil O'Neill doppelganger.", s:"sg1", iss:"1-shot"},
+ // Phase 02 — Atlantis Season 1
+ {after:"SGA 113", t:"Stargate Atlantis Preview", n:"Atlantis Season 1.", s:"sga", iss:"preview"},
+ {after:"SGA 113", t:"Wraithfall", n:"Atlantis Season 1 \u2014 the Karrans' grim bargain with the Wraith.", s:"sga", iss:"#1\u20133"},
+ // Phase 03 — SG-1 Season 9 (Vala / Lucian Alliance era)
+ {after:"SG1 916", t:"Vala Mal Doran", n:"Vala's free-agent days, with the Lucian Alliance circling (Season 9 era).", s:"sg1", iss:"#1\u20135"},
+ // Phase 04 — SG-1 Season 10
+ {after:"SG1 1010\u20131011", t:"Daniel Jackson", n:"Approximate \u2014 a deadly off-world treasure hunt, in the spirit of the Sangraal quest.", s:"sg1", iss:"#1\u20134"},
+ // Phase 06 — after the Atlantis finale (the comic \u201cSeason 6,\u201d in reading order)
+ {after:"SGA 520", t:"Anthology #1 \u2014 \u201cThe Other Guys\u201d", n:"Post-finale \u2014 the chronological start of the continuation (~2\u00BD months after).", s:"sga", iss:"1-shot"},
+ {after:"SGA 520", t:"Back to Pegasus", n:"Post-finale \u2014 Atlantis stranded on Earth.", s:"sga", iss:"#1\u20133"},
+ {after:"SGA 520", t:"Gateways", n:"Post-finale \u2014 the journey back to Pegasus.", s:"sga", iss:"#1\u20133"},
+ {after:"SGA 520", t:"Hearts & Minds", n:"Post-finale \u2014 the rogue Ancient Janus's plan unfolds.", s:"sga", iss:"#1\u20133"},
+ {after:"SGA 520", t:"Singularity", n:"Post-finale finale \u2014 the team vs. Janus. (A parallel continuation to the Legacy novels.)", s:"sga", iss:"#1\u20133"},
+ {after:"SGA 520", t:"Stargate #0 (Dynamite)", n:"2009 teaser for an unmade relaunch \u2014 SG-1 \u201cSeason 11,\u201d Atlantis \u201cSeason 6\u201d & an SGU prequel.", s:"multi", iss:"preview"},
+ // Phase 07 — after the Universe finale
+ {after:"SGU 220", t:"Back to Destiny", n:"Post-finale \u2014 continues straight out of \u201cGauntlet.\u201d", s:"sgu", iss:"#1\u20136"},
+ {after:"SGU 220", t:"Anthology (Ongoing)", n:"Post-finale \u2014 SGA + SGU shorts (incl. \u201cEli's Game\u201d).", s:"multi", iss:"2018+"},
+];
+
+/* ============ RENDER ============ */
+const stream=document.getElementById('stream');
+const coreIds=[]; const phaseCore={};
+const groups={}; const seenKey={}; const chipEls={}; const cbById={}; const codeById={};
+function groupOf(it){
+  if(it.s==='movie'||it.s==='web') return null;
+  if(it.s==='kino') return {k:'sgu-1', l:'Universe S1'};
+  let m=it.c.match(/^(SG1|SGA|SGU)\s+(\d+)/);
+  if(m){ const num=m[2]; const season=num.length<=2?parseInt(num,10):parseInt(num.slice(0,num.length-2),10);
+    const l=(m[1]==='SG1'?'SG-1 S':m[1]==='SGA'?'Atlantis S':'Universe S')+season;
+    return {k:m[1].toLowerCase()+'-'+season, l:l}; }
+  m=it.c.match(/^(\d)\d\d/);
+  if(m){ const s=parseInt(m[1],10); return {k:'sg1-'+s, l:'SG-1 S'+s}; }
+  return null;
+}
+let done=new Set();
+/* ============ STORAGE: Claude artifact -> device localStorage -> memory ============ */
+const store=(()=>{
+  try{ const ws=window['storage']; if(ws && typeof ws.list==='function') return ws; }catch(e){}
+  let ls=null;
+  try{ ls=window.localStorage; const t='sgwatch:__t'; ls.setItem(t,'1'); ls.removeItem(t); }catch(e){ ls=null; }
+  if(ls) return {
+    async get(k){ const v=ls.getItem(k); return v===null?null:{key:k,value:v}; },
+    async set(k,v){ ls.setItem(k,String(v)); return {key:k,value:String(v)}; },
+    async delete(k){ ls.removeItem(k); return {key:k,deleted:true}; },
+    async list(p){ const keys=[]; for(let i=0;i<ls.length;i++){ const k=ls.key(i); if(k && (!p||k.indexOf(p)===0)) keys.push(k); } return {keys}; }
+  };
+  const mem=new Map();
+  return {
+    async get(k){ return mem.has(k)?{key:k,value:mem.get(k)}:null; },
+    async set(k,v){ mem.set(k,String(v)); return {key:k,value:String(v)}; },
+    async delete(k){ mem.delete(k); return {key:k,deleted:true}; },
+    async list(p){ return {keys:[...mem.keys()].filter(k=>!p||k.indexOf(p)===0)}; }
+  };
+})();
+let storageOK=true;
+try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{}); }catch(e){}
+
+/* comics: tracked separately (drive the magenta ring, never the chevrons) */
+const comicIds=[]; const ccbById={}; let comicsDone=new Set();
+const comicsByAnchor={};
+COMIC_INSERTS.forEach((cmObj,idx)=>{ cmObj._id='cm-'+idx; (comicsByAnchor[cmObj.after]=comicsByAnchor[cmObj.after]||[]).push(cmObj); });
+function renderComicRow(cmObj, body){
+  const id=cmObj._id; comicIds.push(id);
+  const b=BADGE[cmObj.s]||BADGE.multi; const bl=b[0], bc=b[1];
+  const row=document.createElement('label'); row.className='row crow completionist-only'; row.dataset.id=id;
+  row.innerHTML='<input type="checkbox" class="ccb" data-id="'+id+'">'+
+    '<span class="rmain"><span class="rline">'+
+    '<span class="ctag">\u25C8 Comic</span>'+
+    '<span class="rtitle">'+cmObj.t+'</span>'+
+    '<span class="badge" style="color:'+bc+'">'+bl+'</span>'+
+    (cmObj.iss?'<span class="parts cm">'+cmObj.iss+'</span>':'')+
+    '</span>'+(cmObj.n?'<span class="note">'+cmObj.n+'</span>':'')+'</span>';
+  ccbById[id]=row.querySelector('.ccb');
+  body.appendChild(row);
+}
+
+PHASES.forEach((ph,pi)=>{
+  phaseCore[pi]=[];
+  const sec=document.createElement('section'); sec.className='phase'; sec.id='phase-'+pi;
+  const head=document.createElement('button'); head.className='phead'; head.setAttribute('aria-expanded','false');
+  head.innerHTML='<span class="pnum" id="pnum-'+pi+'">'+ph.n+'</span>'+
+    '<span class="ptitles"><span class="ptitle">'+ph.title+'</span>'+
+    '<span class="psub"><span class="longsub">'+ph.sub+'</span></span></span>'+
+    '<span class="pmeta"><span class="pcount" id="pcount-'+pi+'">0/0</span>'+
+    '<span class="pbar"><i id="pbar-'+pi+'"></i></span><span class="chev">&#8250;</span></span>';
+  head.addEventListener('click',()=>{ sec.classList.toggle('open'); head.setAttribute('aria-expanded',sec.classList.contains('open')); });
+  sec.appendChild(head);
+  const body=document.createElement('div'); body.className='pbody';
+  const ownedKeys=[]; let phaseComicN=0;
+  ph.items.forEach((it,ii)=>{
+    if(it.hdr){ const h=document.createElement('div'); h.className='seasonhdr'; h.textContent=it.hdr; body.appendChild(h); return; }
+    if(it.sup){
+      const card=document.createElement('div');
+      card.className='sup completionist-only'+(it.kind==='\uD83D\uDCD7'?' comic':'');
+      card.innerHTML='<span class="ico">'+it.kind+'</span><div><div class="stitle">'+it.title+'</div>'+
+        '<div class="sbody">'+it.body+'</div>'+(it.note?'<div class="snote">'+it.note+'</div>':'')+'</div>';
+      body.appendChild(card); return;
+    }
+    const id=pi+'-'+ii; coreIds.push(id); phaseCore[pi].push(id);
+    const grp=groupOf(it);
+    if(grp){ if(!groups[grp.k]) groups[grp.k]={l:grp.l, ids:[]}; groups[grp.k].ids.push(id);
+      if(!seenKey[grp.k]){ seenKey[grp.k]=true; ownedKeys.push(grp.k); } }
+    const b=BADGE[it.s]; const bl=b[0], bc=b[1];
+    const row=document.createElement('label'); row.className='row'; row.dataset.id=id;
+    row.innerHTML='<input type="checkbox" class="cb" data-id="'+id+'">'+
+      '<span class="rmain"><span class="rline">'+
+      '<span class="code">'+it.c+'</span>'+
+      '<span class="rtitle">'+it.t+'</span>'+
+      '<span class="badge" style="color:'+bc+'">'+bl+'</span>'+
+      (it.p?'<span class="parts">&#9646; '+it.p+'</span>':'')+
+      '</span>'+(it.n?'<span class="note">'+it.n+'</span>':'')+'</span>';
+    cbById[id]=row.querySelector('.cb'); codeById[id]=it.c;
+    body.appendChild(row);
+    const ins=comicsByAnchor[it.c];
+    if(ins){ ins.forEach(cmObj=>renderComicRow(cmObj, body)); phaseComicN+=ins.length; }
+  });
+  if(phaseComicN>0){
+    const pm=head.querySelector('.pmeta');
+    const tag=document.createElement('span'); tag.className='pcomic';
+    tag.innerHTML='\u25C8 '+phaseComicN;
+    tag.title=phaseComicN+' comic'+(phaseComicN>1?'s':'')+' woven into this phase';
+    pm.insertBefore(tag, pm.firstChild);
+  }
+  if(ownedKeys.length){
+    const bar=document.createElement('div'); bar.className='seasonbar';
+    bar.innerHTML='<span class="sbl">Finished a season? Mark it</span>';
+    ownedKeys.forEach(k=>{
+      const btn=document.createElement('button'); btn.type='button'; btn.className='schip'; btn.dataset.gk=k;
+      btn.innerHTML='<span class="box"></span>'+groups[k].l+' <i>0/'+groups[k].ids.length+'</i>';
+      bar.appendChild(btn);
+      chipEls[k]={el:btn, ids:groups[k].ids, iEl:btn.querySelector('i')};
+    });
+    body.insertBefore(bar, body.firstChild);
+  }
+  sec.appendChild(body); stream.appendChild(sec);
+});
+const TOTAL=coreIds.length;
+const COMIC_TOTAL=comicIds.length;
+const comicArc=document.getElementById('comicArc'); const C_ARC=2*Math.PI*210;
+
+/* ============ GATE BUILD ============ */
+const NS="http://www.w3.org/2000/svg";
+const cx=200,cy=200;
+const gr=document.getElementById('glyphRing');
+for(let i=0;i<39;i++){
+  const a=(i/39)*2*Math.PI - Math.PI/2; const r1=148,r2=166;
+  const ln=document.createElementNS(NS,'line');
+  ln.setAttribute('x1',cx+Math.cos(a)*r1); ln.setAttribute('y1',cy+Math.sin(a)*r1);
+  ln.setAttribute('x2',cx+Math.cos(a)*r2); ln.setAttribute('y2',cy+Math.sin(a)*r2);
+  ln.setAttribute('stroke','#52617A'); ln.setAttribute('stroke-width','1.4'); ln.setAttribute('opacity','0.5');
+  gr.appendChild(ln);
+}
+const chevG=document.getElementById('chevrons'); const chevEls=[];
+for(let i=0;i<9;i++){
+  const a=(i/9)*2*Math.PI - Math.PI/2; const r=178;
+  const x=cx+Math.cos(a)*r, y=cy+Math.sin(a)*r; const rot=(a*180/Math.PI)+90;
+  const g=document.createElementNS(NS,'g'); g.setAttribute('transform','translate('+x+' '+y+') rotate('+rot+')');
+  const tri=document.createElementNS(NS,'path'); tri.setAttribute('d','M0,-13 L11,7 L-11,7 Z');
+  tri.setAttribute('fill','var(--chevron-off)'); tri.setAttribute('stroke','#10161F'); tri.setAttribute('stroke-width','1.5');
+  const light=document.createElementNS(NS,'circle'); light.setAttribute('cx','0'); light.setAttribute('cy','-3'); light.setAttribute('r','3.2'); light.setAttribute('fill','#10161F');
+  g.appendChild(tri); g.appendChild(light); chevG.appendChild(g); chevEls.push({g,tri,light,x,y,rot,on:false});
+}
+function setChevron(i,on,force){ const c=chevEls[i]; if(!c)return;
+  if(!force && c.on===on) return; c.on=on;
+  c.tri.setAttribute('fill', on?'var(--chevron)':'var(--chevron-off)');
+  c.tri.setAttribute('filter', on?'url(#fGlow)':'');
+  c.light.setAttribute('fill', on?'var(--chevron-bright)':'#10161F');
+  if(!RM) c.light.style.animation = on ? ('chpulse 2.8s ease-in-out '+(i*0.31).toFixed(2)+'s infinite') : ''; }
+
+const progArc=document.getElementById('progArc'); const ARC_C=2*Math.PI*168;
+const ehpuddle=document.getElementById('ehpuddle'); const ehrim=document.getElementById('ehrim');
+const readout=document.getElementById('readout'); const ringMini=document.getElementById('ringMini'); const ringMiniPct=document.getElementById('ringMiniPct');
+/* ============ FX ENGINE: idle life + chevron ceremonies ============ */
+const RM=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fx=document.getElementById('fxLayer');
+const ehswirl=document.getElementById('ehswirl');
+const svgGate=document.querySelector('#gateWrap svg');
+const starsG=document.getElementById('stars');
+for(let i=0;i<16;i++){
+  let sx,sy,tries=0;
+  do{ sx=-26+Math.random()*452; sy=-26+Math.random()*452; tries++; }while(Math.hypot(sx-200,sy-200)<221 && tries<50);
+  if(tries>=50) continue;
+  const st=document.createElementNS(NS,'circle');
+  st.setAttribute('cx',sx.toFixed(1)); st.setAttribute('cy',sy.toFixed(1));
+  st.setAttribute('r',(0.6+Math.random()*0.9).toFixed(2)); st.setAttribute('fill','#AFC6E8');
+  st.style.animationDuration=(3+Math.random()*4.5).toFixed(2)+'s';
+  st.style.animationDelay=(-Math.random()*6).toFixed(2)+'s';
+  starsG.appendChild(st);
+}
+let booted=false, lastChev=0, demoActive=false, wormholeOn=false, fishTimer=null;
+let prevLockedSet=new Set();
+let ringA=Math.random()*360, ringV=0, ringTV=RM?0:1.6, swirlA=0, _pt=performance.now();
+requestAnimationFrame(function fxloop(t){
+  const dt=Math.min(.06,Math.max(0,(t-_pt)/1000)); _pt=t;
+  ringV+=(ringTV-ringV)*Math.min(1,dt*2.6);
+  if(Math.abs(ringV)>0.02){ ringA=(ringA+ringV*dt)%360; gr.setAttribute('transform','rotate('+ringA.toFixed(2)+' 200 200)'); }
+  if(wormholeOn && !RM && ehswirl){ swirlA=(swirlA+dt*20)%360; ehswirl.setAttribute('transform','rotate('+(-swirlA).toFixed(2)+' 200 200)'); }
+  requestAnimationFrame(fxloop);
+});
+function spinBurst(v,ms){ if(RM)return; ringTV=v; clearTimeout(spinBurst._t); spinBurst._t=setTimeout(()=>{ ringTV=1.6; },ms); }
+function tween(ms,step,doneFn){ const t0=performance.now();
+  requestAnimationFrame(function s(t){ const p=Math.min(1,(t-t0)/ms); step(p); if(p<1) requestAnimationFrame(s); else if(doneFn) doneFn(); }); }
+function shakeGate(mag,ms){ if(RM||!svgGate)return;
+  tween(ms,p=>{ const m=mag*(1-p);
+    svgGate.style.transform='translate('+((Math.random()*2-1)*m).toFixed(1)+'px,'+((Math.random()*2-1)*m).toFixed(1)+'px)';
+  },()=>{ svgGate.style.transform=''; }); }
+function ripple(x,y,color,maxR,ms){ if(RM)return;
+  const c=document.createElementNS(NS,'circle');
+  c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('fill','none'); c.setAttribute('stroke',color);
+  fx.appendChild(c);
+  tween(ms||650,p=>{ c.setAttribute('r',(4+(maxR-4)*p).toFixed(1)); c.setAttribute('stroke-width',(3.2*(1-p)+.4).toFixed(2)); c.setAttribute('opacity',(1-p).toFixed(2)); },()=>c.remove()); }
+function sparks(x,y,n,color){ if(RM)return;
+  for(let k=0;k<n;k++){
+    const a=Math.random()*Math.PI*2, d=24+Math.random()*42, r0=1+Math.random()*1.8;
+    const s=document.createElementNS(NS,'circle'); s.setAttribute('fill',color); fx.appendChild(s);
+    tween(480+Math.random()*340,p=>{ const e=1-Math.pow(1-p,2);
+      s.setAttribute('cx',(x+Math.cos(a)*d*e).toFixed(1)); s.setAttribute('cy',(y+Math.sin(a)*d*e).toFixed(1));
+      s.setAttribute('r',(r0*(1-p)).toFixed(2)); s.setAttribute('opacity',(1-p).toFixed(2));
+    },()=>s.remove());
+  } }
+function lockCeremony(i,big){ const c=chevEls[i]; if(!c)return;
+  setChevron(i,true);
+  if(RM)return;
+  const base='translate('+c.x+' '+c.y+') rotate('+c.rot+')';
+  c.tri.setAttribute('fill','var(--chevron-bright)');
+  tween(430,p=>{ const s=1+0.42*Math.sin(Math.min(1,p*1.12)*Math.PI); c.g.setAttribute('transform',base+' scale('+s.toFixed(3)+')'); },
+    ()=>{ c.g.setAttribute('transform',base); if(c.on) c.tri.setAttribute('fill','var(--chevron)'); });
+  ripple(c.x,c.y,'var(--chevron-bright)',big?58:42,big?800:650);
+  sparks(c.x,c.y,big?11:6,'var(--chevron-bright)');
+  shakeGate(big?4.2:2.4,big?430:300); }
+function kawoosh(){ if(RM)return;
+  const core=document.createElementNS(NS,'circle');
+  core.setAttribute('cx',cx); core.setAttribute('cy',cy); core.setAttribute('fill','#EAF9FF'); core.setAttribute('filter','url(#fGlow)');
+  fx.appendChild(core);
+  spinBurst(0,1500); shakeGate(7,680);
+  tween(340,p=>{ core.setAttribute('r',(6+118*p).toFixed(1)); core.setAttribute('opacity',(.95-p*.3).toFixed(2)); },()=>{
+    tween(560,p=>{ core.setAttribute('r',(124-56*p).toFixed(1)); core.setAttribute('opacity',(.6*(1-p)).toFixed(2)); },()=>core.remove()); });
+  ripple(cx,cy,'var(--eh)',168,900);
+  setTimeout(()=>ripple(cx,cy,'#A5DCF5',150,820),150);
+  sparks(cx,cy,16,'#CFF0FF'); }
+function setWormhole(on){ wormholeOn=on; if(ehswirl) ehswirl.setAttribute('opacity',on?0.26:0);
+  if(on && !fishTimer && !RM){ fishTimer=setInterval(()=>{ if(!document.hidden && Math.random()<0.55) fishJump(); },50000); }
+  if(!on && fishTimer){ clearInterval(fishTimer); fishTimer=null; } }
+function fishJump(){ const f=document.createElementNS(NS,'text'); f.textContent='\uD83D\uDC1F'; f.setAttribute('font-size','15'); fx.appendChild(f);
+  const dir=Math.random()<.5?-1:1;
+  tween(1500,p=>{ f.setAttribute('x',(cx+dir*72*p-8).toFixed(1)); f.setAttribute('y',(cy-Math.sin(p*Math.PI)*82+8).toFixed(1));
+    f.setAttribute('opacity',(p<.12?p/.12:(p>.85?(1-p)/.15:1)).toFixed(2)); },()=>f.remove()); }
+const toastWrap=document.createElement('div'); toastWrap.className='toastwrap'; document.body.appendChild(toastWrap);
+function toast(msg,kind){ const d=document.createElement('div'); d.className='toast'+(kind?' '+kind:''); d.innerHTML=msg;
+  toastWrap.appendChild(d); while(toastWrap.children.length>2) toastWrap.firstChild.remove();
+  setTimeout(()=>{ d.classList.add('bye'); setTimeout(()=>d.remove(),350); },3400); }
+
+const PHRASE=["The gate stands cold \u2014 dial in your first episode.","Chevron one encoded.","Chevron two encoded.","Chevron three encoded.","Chevron four encoded.","Chevron five encoded.","Chevron six encoded.","Chevron seven locked.","Chevron eight encoded \u2014 reaching beyond the galaxy.","Chevron nine locked. Wormhole established."];
+function phaseComplete(pi){ return phaseCore[pi].length>0 && phaseCore[pi].every(id=>done.has(id)); }
+function refresh(){
+  const c=done.size; const pct=TOTAL? c/TOTAL : 0;
+  progArc.setAttribute('stroke-dasharray',(pct*ARC_C).toFixed(1)+' '+ARC_C);
+  ehpuddle.setAttribute('opacity',(0.16+pct*0.74).toFixed(3));
+  ehrim.setAttribute('opacity',(0.18+pct*0.5).toFixed(3));
+  ringMini.style.setProperty('--p',(pct*100).toFixed(0)); ringMiniPct.textContent=Math.round(pct*100)+'%';
+  let locked=0; const nowLocked=[];
+  PHASES.forEach((ph,pi)=>{
+    const els=phaseCore[pi]; const dn=els.filter(id=>done.has(id)).length;
+    document.getElementById('pcount-'+pi).textContent=dn+'/'+els.length;
+    document.getElementById('pbar-'+pi).style.width=(els.length?dn/els.length*100:0)+'%';
+    const full=phaseComplete(pi);
+    document.getElementById('pnum-'+pi).classList.toggle('locked',full);
+    if(full){ locked++; nowLocked.push(ph.chev); }
+  });
+  const ceremony = booted && !demoActive && locked>lastChev;
+  const fresh = ceremony ? nowLocked.filter(i=>!prevLockedSet.has(i)) : [];
+  for(let i=0;i<9;i++){
+    if(ceremony && fresh.indexOf(i)>=0) continue; /* lit by the ceremony, on its beat */
+    setChevron(i, nowLocked.indexOf(i)>=0);
+  }
+  if(ceremony && fresh.length){
+    const lastChevAtFire=lastChev;
+    spinBurst(150, 700+fresh.length*450);
+    fresh.forEach((ci,k)=>setTimeout(()=>{
+      lockCeremony(ci, locked===9 && k===fresh.length-1);
+      toast(PHRASE[Math.min(lastChevAtFire+k+1,9)], (lastChevAtFire+k+1)>=9?'gold':null);
+    },380+k*450));
+    if(locked===9) setTimeout(kawoosh, 380+(fresh.length-1)*450+560);
+  } else if(booted && !demoActive && locked<lastChev && lastChev===9){
+    toast('Wormhole disengaged.');
+  }
+  for(const gk in chipEls){
+    const g=chipEls[gk]; const n=g.ids.filter(id=>done.has(id)).length; const tot=g.ids.length;
+    g.iEl.textContent=n+'/'+tot;
+    g.el.classList.toggle('all', tot>0 && n===tot);
+    g.el.classList.toggle('some', n>0 && n<tot);
+  }
+  prevLockedSet=new Set(nowLocked); lastChev=locked;
+  setWormhole(locked===9);
+  readout.innerHTML = c===0 ? 'Dial an episode to begin. <b>0</b> of '+TOTAL+' stops locked in.'
+    : (c===TOTAL ? '<b>Wormhole established.</b> All '+TOTAL+' stops complete \u2014 chevron nine locked.'
+      : PHRASE[Math.min(locked,9)]+' <b>'+c+'</b> of '+TOTAL+' stops locked in.');
+}
+</script>
+
+<script>
+/* ============ PERSISTENCE ============ */
+const PFX='sgwatch:i:';
+const CPFX='sgwatch:c:';
+async function loadState(){
+  if(storageOK){
+    try{
+      const res=await store.list(PFX);
+      if(res && res.keys){ res.keys.forEach(k=>done.add(k.slice(PFX.length))); }
+    }catch(err){ storageOK=false; }
+    try{
+      const m=await store.get('sgwatch:mode');
+      if(m && m.value==='comp') setMode('comp',false);
+    }catch(err){ /* key absent: stay on screen mode */ }
+  }
+  document.querySelectorAll('.cb').forEach(cb=>{
+    if(done.has(cb.dataset.id)){ cb.checked=true; cb.closest('.row').classList.add('done'); }
+  });
+  if(storageOK){
+    try{
+      const r=await store.list(CPFX);
+      if(r && r.keys){ r.keys.forEach(k=>comicsDone.add(k.slice(CPFX.length))); }
+    }catch(err){ storageOK=false; }
+  }
+  document.querySelectorAll('.ccb').forEach(cb=>{
+    if(comicsDone.has(cb.dataset.id)){ cb.checked=true; cb.closest('.row').classList.add('cdone'); }
+  });
+  refresh();
+  refreshComics();
+}
+async function persist(id,on){
+  if(!storageOK) return;
+  try{
+    if(on) await store.set(PFX+id,'1');
+    else   await store.delete(PFX+id);
+  }catch(err){ storageOK=false; }
+}
+
+/* ============ MODE ============ */
+function setMode(mode,save){
+  if(save===undefined) save=true;
+  const comp = mode==='comp';
+  document.body.classList.toggle('show-completionist',comp);
+  document.getElementById('mComp').classList.toggle('on',comp);
+  document.getElementById('mScreen').classList.toggle('on',!comp);
+  document.querySelectorAll('.legend .completionist-only').forEach(el=>{ el.style.display = comp?'inline-flex':'none'; });
+  if(save && storageOK){ try{ store.set('sgwatch:mode', comp?'comp':'screen'); }catch(err){} }
+}
+document.getElementById('mScreen').addEventListener('click',()=>setMode('screen'));
+document.getElementById('mComp').addEventListener('click',()=>setMode('comp'));
+
+/* ============ CHECKBOXES ============ */
+stream.addEventListener('change',e=>{
+  const cb=e.target.closest('.cb');
+  if(cb){
+    const id=cb.dataset.id;
+    if(cb.checked) done.add(id); else done.delete(id);
+    cb.closest('.row').classList.toggle('done',cb.checked);
+    persist(id,cb.checked); refresh(); epEgg(id,cb.checked); return;
+  }
+  const cc=e.target.closest('.ccb');
+  if(cc){
+    const id=cc.dataset.id;
+    if(cc.checked) comicsDone.add(id); else comicsDone.delete(id);
+    cc.closest('.row').classList.toggle('cdone',cc.checked);
+    persistComic(id,cc.checked); refreshComics(); return;
+  }
+});
+
+/* ============ COMICS (separate from the gate) ============ */
+async function persistComic(id,on){
+  if(!storageOK) return;
+  try{ if(on) await store.set(CPFX+id,'1'); else await store.delete(CPFX+id); }
+  catch(err){ storageOK=false; }
+}
+function refreshComics(){
+  const n=comicsDone.size; const tot=COMIC_TOTAL; const pct=tot?n/tot:0;
+  comicArc.setAttribute('stroke-dasharray',(pct*C_ARC).toFixed(1)+' '+C_ARC);
+  const r=document.getElementById('comicReadout');
+  if(r) r.innerHTML='\u25C8 Comics archive \u00B7 <b>'+n+'</b> / '+tot+' logged';
+}
+
+/* ============ SEASON CHECK-ALL ============ */
+function toggleGroup(gk){
+  const g=chipEls[gk]; if(!g) return;
+  const target = !g.ids.every(id=>done.has(id)); // all done -> clear; otherwise fill
+  g.ids.forEach(id=>{
+    if(target) done.add(id); else done.delete(id);
+    const cb=cbById[id];
+    if(cb){ cb.checked=target; cb.closest('.row').classList.toggle('done',target); }
+    persist(id,target);
+  });
+  refresh();
+}
+stream.addEventListener('click',e=>{
+  const chip=e.target.closest('.schip'); if(chip){ toggleGroup(chip.dataset.gk); return; }
+});
+
+/* ============ TOOLBAR ============ */
+const expandBtn=document.getElementById('expandBtn');
+expandBtn.addEventListener('click',()=>{
+  const anyClosed=[...document.querySelectorAll('.phase')].some(p=>!p.classList.contains('open'));
+  document.querySelectorAll('.phase').forEach(p=>{
+    p.classList.toggle('open',anyClosed);
+    p.querySelector('.phead').setAttribute('aria-expanded',anyClosed);
+  });
+  expandBtn.textContent = anyClosed ? 'Collapse all' : 'Expand all';
+});
+document.getElementById('resetBtn').addEventListener('click', async ()=>{
+  if(!confirm('Clear all watch and comics progress? This cannot be undone.')) return;
+  done.clear(); comicsDone.clear();
+  document.querySelectorAll('.cb').forEach(cb=>{ cb.checked=false; cb.closest('.row').classList.remove('done'); });
+  document.querySelectorAll('.ccb').forEach(cb=>{ cb.checked=false; cb.closest('.row').classList.remove('cdone'); });
+  if(storageOK){
+    try{
+      const res=await store.list(PFX);
+      if(res && res.keys){ for(const k of res.keys){ try{ await store.delete(k); }catch(err){} } }
+      const rc=await store.list(CPFX);
+      if(rc && rc.keys){ for(const k of rc.keys){ try{ await store.delete(k); }catch(err){} } }
+    }catch(err){}
+  }
+  refresh(); refreshComics();
+});
+
+/* ============ BACKUP / RESTORE ============ */
+document.getElementById('backupBtn').addEventListener('click', ()=>{
+  const data={app:'sgwatch',v:1,exported:new Date().toISOString(),
+    episodes:[...done],comics:[...comicsDone],
+    mode:document.body.classList.contains('show-completionist')?'comp':'screen'};
+  const blob=new Blob([JSON.stringify(data,null,1)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='stargate-progress.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  toast('Backup downloaded \u2014 stash it somewhere safe.','gold');
+});
+const restoreInput=document.createElement('input');
+restoreInput.type='file'; restoreInput.accept='application/json,.json';
+restoreInput.style.display='none'; document.body.appendChild(restoreInput);
+document.getElementById('restoreBtn').addEventListener('click',()=>restoreInput.click());
+restoreInput.addEventListener('change', async ()=>{
+  const file=restoreInput.files && restoreInput.files[0]; if(!file) return;
+  try{
+    const data=JSON.parse(await file.text());
+    if(data.app!=='sgwatch' || !Array.isArray(data.episodes)) throw new Error('bad file');
+    try{
+      const r1=await store.list(PFX); if(r1&&r1.keys) for(const k of r1.keys) await store.delete(k);
+      const r2=await store.list(CPFX); if(r2&&r2.keys) for(const k of r2.keys) await store.delete(k);
+    }catch(e){}
+    done=new Set(data.episodes.filter(id=>cbById[id]));
+    comicsDone=new Set((data.comics||[]).filter(id=>ccbById[id]));
+    for(const id of done) await store.set(PFX+id,'1');
+    for(const id of comicsDone) await store.set(CPFX+id,'1');
+    document.querySelectorAll('.cb').forEach(cb=>{ const on=done.has(cb.dataset.id); cb.checked=on; cb.closest('.row').classList.toggle('done',on); });
+    document.querySelectorAll('.ccb').forEach(cb=>{ const on=comicsDone.has(cb.dataset.id); cb.checked=on; cb.closest('.row').classList.toggle('cdone',on); });
+    if(data.mode) setMode(data.mode==='comp'?'comp':'screen');
+    refresh(); refreshComics();
+    toast('Progress restored \u2014 '+done.size+' stops, '+comicsDone.size+' comics.','gold');
+  }catch(err){ toast('That file doesn\u2019t look like a Stargate backup.'); }
+  restoreInput.value='';
+});
+
+/* ============ EASTER EGGS ============ */
+function epEgg(id,on){
+  if(!on) return;
+  const code=codeById[id];
+  if(code==='406'){ /* Window of Opportunity */
+    document.body.classList.remove('tloop'); void document.body.offsetWidth; document.body.classList.add('tloop');
+    spinBurst(-170,900); toast('Good morning, campers! \u23F0 \u2026again.','gold');
+  }
+  else if(code==='SG1 1006'){ /* "200" */
+    toast('\uD83D\uDCFA Two hundred trips through the gate \u2014 <b>\u201CWormhole X-Treme!\u201D</b>','pink'); confetti();
+  }
+  else if(code==='221'){ toast('\u262E\uFE0F Far out, man. (1969)'); }
+  else if(code==='512'){ toast('\uD83C\uDFAC \u201CWormhole X-Treme!\u201D \u2014 now in production.'); }
+}
+function confetti(){ if(RM)return;
+  const gl=['\u25C8','\u2726','\u25CF','\u2727','\u25B4'];
+  const cols=['#E76AA4','#4FB8E6','#F4A93C','#37C8A4','#9080E6'];
+  for(let i=0;i<26;i++){ const s=document.createElement('span'); s.className='confetti';
+    s.textContent=gl[i%gl.length]; s.style.color=cols[i%cols.length];
+    s.style.left=(3+Math.random()*94)+'vw';
+    s.style.fontSize=(10+Math.random()*11)+'px';
+    s.style.animationDuration=(2.3+Math.random()*1.9)+'s';
+    s.style.animationDelay=(Math.random()*0.8)+'s';
+    document.body.appendChild(s); setTimeout(()=>s.remove(),5400); } }
+let dialTaps=0, dialTapT=0;
+if(svgGate) svgGate.addEventListener('click',()=>{
+  const now=Date.now(); if(now-dialTapT>4000) dialTaps=0;
+  dialTapT=now; dialTaps++;
+  if(dialTaps>=7){ dialTaps=0; demoDial(); }
+});
+function demoDial(){
+  if(demoActive) return;
+  if(RM){ toast('Off-world activation \u2014 all nine chevrons, no waiting.','gold'); return; }
+  demoActive=true; toast('Unscheduled off-world activation!','gold');
+  spinBurst(175, 9*430+500);
+  for(let i=0;i<9;i++){ setTimeout(()=>lockCeremony(i,i===8), 430+i*430); }
+  setTimeout(kawoosh, 430+9*430);
+  setTimeout(()=>{ demoActive=false;
+    for(let i=0;i<9;i++) setChevron(i, prevLockedSet.has(i), true);
+    setWormhole(lastChev===9);
+    toast('Simulation complete \u2014 back to your dial-in.');
+  }, 430+9*430+2100);
+}
+function kreeFlash(){ toast('Jaffa! Kree!','gold'); if(RM)return;
+  for(let i=0;i<9;i++){ setTimeout(()=>{ const c=chevEls[i]; if(!c)return;
+    c.tri.setAttribute('fill','var(--chevron-bright)'); c.tri.setAttribute('filter','url(#fGlow)');
+    setTimeout(()=>{ c.tri.setAttribute('fill', c.on?'var(--chevron)':'var(--chevron-off)'); c.tri.setAttribute('filter', c.on?'url(#fGlow)':''); },150);
+  }, i*85); } }
+function walterCall(){
+  const words=['one','two','three','four','five','six','seven','eight','nine'];
+  if(lastChev>0){ toast('Chevron '+words[lastChev-1]+' \u2026 locked!','gold'); lockCeremony(lastChev-1,false); }
+  else toast('Standing by, sir.');
+}
+let keybuf=''; const KON=['arrowup','arrowup','arrowdown','arrowdown','arrowleft','arrowright','arrowleft','arrowright','b','a']; let kpos=0;
+window.addEventListener('keydown',e=>{
+  if(e.target && /input|textarea|select/i.test(e.target.tagName)) return;
+  const k=(e.key||'').toLowerCase();
+  kpos = (k===KON[kpos]) ? kpos+1 : (k===KON[0]?1:0);
+  if(kpos===KON.length){ kpos=0; demoDial(); return; }
+  if(k.length===1 && /[a-z]/.test(k)){
+    keybuf=(keybuf+k).slice(-10);
+    if(keybuf.endsWith('indeed')){ keybuf=''; toast('Indeed.','gold'); }
+    else if(keybuf.endsWith('kree')){ keybuf=''; kreeFlash(); }
+    else if(keybuf.endsWith('walter')){ keybuf=''; walterCall(); }
+    else if(keybuf.endsWith('kawoosh')){ keybuf=''; toast('Unscheduled off-world activation!'); kawoosh(); }
+    else if(keybuf.endsWith('furling')){ keybuf=''; toast('The Furlings remain unseen. \uD83D\uDC3F\uFE0F','pink'); }
+  }
+});
+
+/* ============ INTRO + KICKOFF ============ */
+document.getElementById('phase-0').classList.add('open');
+document.querySelector('#phase-0 .phead').setAttribute('aria-expanded','true');
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduce){
+  const gw=document.getElementById('gateWrap');
+  gw.classList.add('dialing');
+  setTimeout(()=>gw.classList.remove('dialing'),2500);
+}
+loadState().then(()=>{ booted=true; });
+if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
